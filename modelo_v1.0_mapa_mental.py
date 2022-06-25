@@ -1,6 +1,3 @@
-Mascara1= [1, 2, 3, 4, 5, 6, 7, 8, 5, 5, 5, 5, 5, 5]
-Mascara1_txt= ['holapg', 'gominola', 'esta', 'durmiendo', 'sebas4', 'sebas6', 'sebas7', 'sebas8', 'ebas3', 'sebas2', 'sebitas', 'sebas', 'holagt', 'holagp']
-Mascaracon= ['1', '0', '0', '1', '1', '1', '1', '0', '0', '0', '1', '1', '1', '0']
 import inkex
 import random
 import numpy as np
