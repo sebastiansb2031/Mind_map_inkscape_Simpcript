@@ -36,16 +36,15 @@ def crear_matriz():
     print(Mascara1)
     print(Mascara1_txt_aux)  
   if c=="2":
-    #arch=input("Indique el nombre del archivo,debe estar en el mismo directorio    :")
+    arch=input("Indique el nombre del archivo,debe estar en el mismo directorio    :")
     #textoo=open("holap.txt","r")
     #textoo2=textoo.readlines()
-    with open('holap.txt',"r") as textoo:
+    with open(arch+".txt","r") as textoo:
      lines = textoo.readlines()
      textoo.close()
     #Mascara1_txt=[]
     #Mascara1=[] 
     Mascara1=lines[0].split()
-    print("longitud "+str(Mascara1[1]))
     for i in range(len(Mascara1)):
      Mascara1[i]=int(Mascara1[i])
      #guardar()
@@ -82,6 +81,9 @@ def crear_matriz():
     for i in range(len(Mascara1)):
      cadena=cadena+Mascara1_txt[i]+" "
     cadena=cadena+"\n"
+    for i in range(len(Mascaracon)):
+     cadena=cadena+str(Mascaracon[i])+" "
+    cadena=cadena+"\n"
     texton=open( c0g+".txt",'w')
     texton.write(cadena)
     texton.close()
@@ -96,11 +98,16 @@ def crear_matriz():
     if c0aux=="d" :
      Mascara1_txt[posaux]=""
      Mascaracon[posaux]="1"
+     for i in range(len(Mascara1_txt)):
+      Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
+     print(Mascara1)
+     print(Mascara1_txt_aux)
      guardar(Mascara1,Mascara1_txt,Mascaracon)
-     print(Mascara1_txt)
     if c0aux=="cd" :
      Mascara1_txt[posaux]=""
      Mascaracon[posaux]="0"
+     for i in range(len(Mascara1_txt)):
+      Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
      guardar(Mascara1,Mascara1_txt,Mascaracon)
      print(Mascara1_txt)
     if c0aux=="c" :
@@ -109,6 +116,8 @@ def crear_matriz():
      Mascara1_txt[posaux]=entradad
      Mascara1_txt_aux[posaux]=str(Mascara1[posaux])+entradad
      Mascaracon[posaux]="1"
+     for i in range(len(Mascara1_txt)):
+      Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
      guardar(Mascara1,Mascara1_txt,Mascaracon)
      print(Mascara1_txt_aux) 
     if c0aux=="cc" :
@@ -117,6 +126,8 @@ def crear_matriz():
      Mascara1_txt[posaux]=entradad
      Mascara1_txt_aux[posaux]=str(Mascara1[posaux])+entradad
      Mascaracon[posaux]="0"
+     for i in range(len(Mascara1_txt)):
+      Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
      guardar(Mascara1,Mascara1_txt,Mascaracon)
      print(Mascara1_txt_aux)  
     if c0aux=="nw":
@@ -135,6 +146,8 @@ def crear_matriz():
      Mascara1_txt[posaux+1]=entradanw
      Mascara1_txt_aux[posaux+1]=str(Mascara1[posaux+1])+entradanw
      Mascaracon[posaux+1]="1"
+     for i in range(len(Mascara1_txt)):
+      Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
      guardar(Mascara1,Mascara1_txt,Mascaracon)
      print(Mascara1_txt_aux)
      
@@ -154,6 +167,8 @@ def crear_matriz():
      Mascara1_txt[posaux+1]=entradanw
      Mascara1_txt_aux[posaux+1]=str(Mascara1[posaux+1])+entradanw
      Mascaracon[posaux+1]="0"
+     for i in range(len(Mascara1_txt)):
+      Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
      guardar(Mascara1,Mascara1_txt,Mascaracon)
      print(Mascara1_txt_aux) 
     
@@ -230,7 +245,7 @@ def crear_matriz():
 #Mascara1=[1,2,3,4,5,5,5,5,5]
 Mascaracon=[1, 1 ,0, 0, 0, 1,1]
 crear_matriz()
-
+globals()["e72"].remove()
 #Mascara2=[1,2,3,4,5,5,3,3,4,5,5,2,3,3,3,2,3,3,3,4,5,6,5,6,6]
  #Mascara2_txt=np.zeros(len(Mascara2))
 

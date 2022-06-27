@@ -19,15 +19,15 @@ ancho_elipse_ttl=largo_ttl
 largo_elipse=ancho_fuente*4
 largo_elipse_ttl=ancho_fuente*4*3
 
-pcentralx=296/2
-pcentraly=210/2
+pcentralx0=296/2
+pcentraly0=210/2
 radioxinicial=ancho_elipse/2
 radioyinicial=largo_elipse
 
 radio_min=2*2*max(radioxinicial,radioyinicial)
 Tamaño=np.bincount(Mascara1)
 #globals()["MedidaU"]=max(Tamaño[len(Tamaño)-1]*max(ancho_elipse,largo_elipse)/(2*pi)+radio_min*(len(Tamaño)-1),pcentralx)
-globals()["MedidaU"]=Tamaño[len(Tamaño)-1]*max(ancho_elipse,largo_elipse)/(2*pi)+radio_min*(len(Tamaño)-1)
+globals()["MedidaU"]=Tamaño[len(Tamaño)-1]*max(ancho_elipse,largo_elipse)/(2*pi)+radio_min*(len(Tamaño)-1)+ancho_elipse_ttl
 #Escala=pcentralx/globals()["MedidaU"]
 Escala=1
 pcentralx=globals()["MedidaU"]
@@ -58,14 +58,14 @@ Colorespastel1 ={'Rojo1' : '#E6B0AA', 'Morado1' : '#D7BDE2' ,'Azul1' : '#A9CCE3'
 #colorindex=random.randomint(0,len(Colorespastel))
 #1mm=3.78px (Si es milimetros multiplicar por 3.78)
 #1pt=1.3333pt
-
+color_e_ttl=random.choice(list(Colorespastel1.values()))
 
 #Mascara2=np.array([1,2,3,4,5,5,3,3,4,5,5,2,3,3,3,2,3,3,3,4,5,6,5,6,6])
 
 #svg_root.set('width', str(pcentralx*2)+'mm')
 #svg_root.set('height', str(pcentraly*2)+'mm')
  
-def add_j3 (matriz):
+def crear_lineas (matriz):
  #e0=ellipse((pcentralx, pcentraly), (radioxinicial, radioyinicial), stroke_width= ancho_linea,fill='#%02x%02x%02x' % (randrange(256), randrange(256), randrange(256)))
  Tamaño=np.bincount(matriz)
  #print(Tamaño)
@@ -73,17 +73,16 @@ def add_j3 (matriz):
  for k in range(len(Tamaño)-2) :
   q=Tamaño[k+1]
   qf=Tamaño[k+2]
+  radio_min0=ancho_elipse_ttl
   radio_min=2*2*max(ancho_elipse/2,largo_elipse)
-  radio=(q)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(k+1)
-  radiof=(qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(k+1)
-  radiof2=(qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(k+1)
+  radio=(q)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(k+1)+radio_min0
+  radiof=(qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(2*k+2)+radio_min0
+  radiof2=(qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(2*k+2)+radio_min0
   qh=2*pi*radio/(max(ancho_elipse,largo_elipse))
   qhf=2*pi*radiof/(max(ancho_elipse,largo_elipse))
   ang_actual=0
   nactual=0
-  #if k==len(Tamaño)-3:
-   #globals()["nuevamedidax"]=max((radiof+radio_min+ancho_elipse_ttl),pcentralx)
-   #globals()["nuevamediday"]=max((radiof+radio_min+ancho_elipse_ttl)*(210)/(296),pcentraly)
+  aux1=0
   if k>0:
    resh=360/(qh+qh%2)
    res=360/(q+q%2)
@@ -94,29 +93,49 @@ def add_j3 (matriz):
     else:
      ang_actual=(i)
     for n in range(globals()["Nelementos"+str(k+1)+str(i)]): #numero de elementos jerarquia superior de cada elementos de jerarquia anterior
-      if Mascaracon[np.where(Mascara1==k+2)[0][nactual+n]]=="1" :
-       globals()["e" + str(nactual+n+1)+str(k+2)]=ellipse(((radiof)*cos(globals()["Angulo"+str(k+1)+str(i)]+resf*(n)*pi/180)+pcentralx,( radiof)*sin(globals()["Angulo"+str(k+1)+str(i)]+resf*(n)*pi/180)+pcentraly), (ancho_elipse/2, largo_elipse), stroke_width= 0,fill=random.choice(list(Colorespastel1.values())) )   
-      else:
-       globals()["e" + str(nactual+n+1)+str(k+2)]=ellipse(((radiof)*cos(globals()["Angulo"+str(k+1)+str(i)]+resf*(n)*pi/180)+pcentralx,( radiof)*sin(globals()["Angulo"+str(k+1)+str(i)]+resf*(n)*pi/180)+pcentraly), (ancho_elipse/2, largo_elipse), stroke_width= 0,fill='#FFFFFF' )     
-      globals()["Angulo"+str(k+2)+str(nactual+n)]= globals()["Angulo"+str(k+1)+str(i)]+resf*(n)*pi/180
-      connector(globals()["e" + str(nactual+n+1)+str(k+2)], globals()["e" + str(i+1)+str(k+1)], ctype='polyline',stroke_width=1*Escala*mm)
-      globals()["Centrox"+str(k+2)+str(nactual+n)]=(radiof)*cos(globals()["Angulo"+str(k+1)+str(i)]+resf*(n)*pi/180)+pcentralx
-      globals()["Centroy"+str(k+2)+str(nactual+n)]=(radiof)*sin(globals()["Angulo"+str(k+1)+str(i)]+resf*(n)*pi/180)+pcentraly
+     globals()["Angulo"+str(k+2)+str(nactual+n)]= round((globals()["Angulo"+str(k+1)+str(i)]+resf*(n)*pi/180)/(resf*pi/180))*(resf*pi/180)
+     if nactual>0: 
+      while globals()["Angulo"+str(k+2)+str(nactual+n)]-globals()["Angulo"+str(k+2)+str(nactual+n-1)]<(resf*pi/(180*2)):
+       globals()["Angulo"+str(k+2)+str(nactual+n)]= round((globals()["Angulo"+str(k+1)+str(i)]+resf*(n+aux1)*pi/180)/(resf*pi/180))*(resf*pi/180)
+       aux1=aux1+1
+     aux1=0   
+     globals()["Centrox"+str(k+2)+str(nactual+n)]=(radiof)*cos(globals()["Angulo"+str(k+2)+str(nactual+n)])+pcentralx
+     globals()["Centroy"+str(k+2)+str(nactual+n)]=(radiof)*sin(globals()["Angulo"+str(k+2)+str(nactual+n)])+pcentraly
+     globals()["Color"+str(k+2)+str(nactual+n)]=random.choice(list(Colorespastel1.values()))
+     line((globals()["Centrox"+str(k+2)+str(nactual+n)],  globals()["Centroy"+str(k+2)+str(nactual+n)]), ( globals()["Centrox"+str(k+1)+str(i)],  globals()["Centroy"+str(k+1)+str(i)]), stroke=globals()["Color"+str(k+1)+str(i)],stroke_width=1*mm)
     nactual=nactual+globals()["Nelementos"+str(k+1)+str(i)]
-  
   else:
    res=360/(qf+qf%2)
    for i in range(qf):
-     if Mascaracon[np.where(Mascara1==k+2)[0][i]]=="1" :
-      globals()["e" + str(i+1)+str(k+2)]=ellipse(((radiof2)*cos(ang_actual+res*i*pi/180)+pcentralx,( radiof2)*sin(ang_actual+res*i*pi/180)+pcentraly), (ancho_elipse/2, largo_elipse), stroke_width= 0,fill=random.choice(list(Colorespastel1.values())) )
-     else:
-      globals()["e" + str(i+1)+str(k+2)]=ellipse(((radiof2)*cos(ang_actual+res*i*pi/180)+pcentralx,( radiof2)*sin(ang_actual+res*i*pi/180)+pcentraly), (ancho_elipse/2, largo_elipse), stroke_width= 0,fill='#FFFFFF' )
-     connector(globals()["e" + str(i+1)+str(k+2)], e0, ctype='polyline',stroke_width=1*Escala*mm)
      globals()["Angulo"+str(2)+str(i)]=res*i*pi/180
      globals()["Centrox"+str(2)+str(i)]=(radiof2)*cos(ang_actual+res*i*pi/180)+pcentralx
      globals()["Centroy"+str(2)+str(i)]=( radiof2)*sin(ang_actual+res*i*pi/180)+pcentraly
+     globals()["Color"+str(2)+str(i)]=random.choice(list(Colorespastel1.values()))
+     line((globals()["Centrox"+str(2)+str(i)],  globals()["Centroy"+str(2)+str(i)]), (pcentralx, pcentraly), stroke=color_e_ttl,stroke_width=1*mm)  
+   
 
-
+def crear_elipses(matriz):
+ Tamaño=np.bincount(matriz)
+ 
+ for k in range(len(Tamaño)-2) :
+  q=Tamaño[k+1]
+  qf=Tamaño[k+2]
+  nactual=0
+  if k>0:   
+   for i in range(q):   
+    for n in range(globals()["Nelementos"+str(k+1)+str(i)]):         
+      if Mascaracon[np.where(Mascara1==k+2)[0][nactual+n]]=="1" :
+       globals()["e" + str(nactual+n+1)+str(k+2)]=ellipse((globals()["Centrox"+str(k+2)+str(nactual+n)],globals()["Centroy"+str(k+2)+str(nactual+n)]), (ancho_elipse/2, largo_elipse), stroke_width= 0,fill=globals()["Color"+str(k+2)+str(nactual+n)] )   
+      else:
+       globals()["e" + str(nactual+n+1)+str(k+2)]=ellipse((globals()["Centrox"+str(k+2)+str(nactual+n)],globals()["Centroy"+str(k+2)+str(nactual+n)]), (ancho_elipse/2, largo_elipse), stroke_width= 0,fill='#FFFFFF' )
+    nactual=nactual+globals()["Nelementos"+str(k+1)+str(i)]   
+  else:
+   for i in range(qf):
+     if Mascaracon[np.where(Mascara1==k+2)[0][i]]=="1" :
+      globals()["e" + str(i+1)+str(k+2)]=ellipse(( globals()["Centrox"+str(2)+str(i)],globals()["Centroy"+str(2)+str(i)]), (ancho_elipse/2, largo_elipse), stroke_width= 0,fill=globals()["Color"+str(2)+str(i)] )
+     else:
+      globals()["e" + str(i+1)+str(k+2)]=ellipse(( globals()["Centrox"+str(2)+str(i)],globals()["Centroy"+str(2)+str(i)]), (ancho_elipse/2, largo_elipse), stroke_width= 0,fill='#000000' )
+     #connector(globals()["e" + str(i+1)+str(k+2)], e0, ctype='polyline',stroke='#FF0000', stroke_width=1*Escala*mm) Conector que ya valio verga        
    
 def crear_angulos(matriz):
  #print(matriz)
@@ -124,7 +143,6 @@ def crear_angulos(matriz):
  Tamaño=np.bincount(matriz)
  matrizres=[]
  matrizang=[]
- 
  for i in range(2,len(Tamaño),1):  ##Vectores de posicion de jerarquías y resoluciones de ángulos
   matrizres.append(360/(Tamaño[i]+Tamaño[i]%2))
   globals()["conta"+str(i)]=0
@@ -133,20 +151,19 @@ def crear_angulos(matriz):
   #print(globals()["pos"+str(i)])
  #print(Tamaño[2:])
  #print(matrizres)
-
  for i in range(2,len(Tamaño)-1,1):
   globals()["Nelementosmax"+str(i)]=0
   for j in range(len(globals()["pos"+str(i)])):
    if j<len(globals()["pos"+str(i)])-1:
     globals()["Nelementos"+str(i)+str(j)]=len(globals()["pos"+str(i+1)][np.where((globals()["pos"+str(i+1)]>globals()["pos"+str(i)][j]) & (globals()["pos"+str(i+1)]<globals()["pos"+str(i)][j+1]))[0]])
-    
-    
    else:
     globals()["Nelementos"+str(i)+str(j)]=len(globals()["pos"+str(i+1)][np.where((globals()["pos"+str(i+1)]>globals()["pos"+str(i)][j]))[0]])
     #print("Nelementos"+str(i)+str(j+1))
     #print(globals()["Nelementos"+str(i)+str(j)])
    #globals()["Nelementosmax"+str(i)]=max(globals()["Nelementosmax"+str(i)],globals()["Nelementos"+str(i)+str(j)])  
   #print("max "+str(i)+str(globals()["Nelementosmax"+str(i)]))  
+  
+  
 def Colores(matriz):
  Tamaño=np.bincount(matriz)
  for i in range(2,len(Tamaño),1):
@@ -154,25 +171,26 @@ def Colores(matriz):
    if Mascaracon[np.where(Mascara1==i)[0][j]]=="0":
     globals()["e"+str(j+1)+str(i)]=ellipse((globals()["Centrox"+str(i)+str(j)],globals()["Centroy"+str(i)+str(j)]), (ancho_elipse/2, largo_elipse), stroke_width= 0,fill='#FFFFFF')
     #globals()["e"+str(j+1)+str(i)].remove()
-    #globals()["e"+str(j)+str(i)].fill="#FFFFFF" 
-
-  
+    #globals()["e"+str(j)+str(i)].fill="#FFFFFF"   
+    
+    
 def Escribir_texto(matriz):
  Tamaño=np.bincount(matriz)
  for i in range(2,len(Tamaño),1):
   for j in range(Tamaño[i]):
-   globals()["Texto"+str(i)+str(j)]=text(Mascara1_txt[np.where(Mascara1==i)[0][j]], (globals()["Centrox"+str(i)+str(j)]-len(Mascara1_txt[np.where(Mascara1==i)[0][j]])*ancho_fuente/2, globals()["Centroy"+str(i)+str(j)]+ancho_fuente),  font_size=2*mm*Escala)
+   globals()["Texto"+str(i)+str(j)]=text(Mascara1_txt[np.where(Mascara1==i)[0][j]], (globals()["Centrox"+str(i)+str(j)]-len(Mascara1_txt[np.where(Mascara1==i)[0][j]])*ancho_fuente/2, globals()["Centroy"+str(i)+str(j)]),  font_size=2*mm*Escala)
 
 
+rect((0, 0), (2*pcentralx, 2*pcentraly),fill='#FDFDE5',stroke_width=1*mm)
+#image('https://media.inkscape.org/static/images/inkscape-logo.png', (0, 0), embed=False)
 
-   
-rect((0, 0), (2*pcentralx, 2*pcentraly),fill='#FFFFFF',stroke_width=0*mm)      
-e0=ellipse((pcentralx, pcentraly), (ancho_elipse_ttl, largo_elipse_ttl), stroke_width=0,fill=random.choice(list(Colorespastel1.values())))
-Titulo=text(Mascara1_txt[0], (pcentralx-largo_ttl/2,pcentraly+ancho_fuente),  font_size=6*mm*Escala)
-#e0=ellipse((pcentralx, pcentraly), (ancho_elipse_ttl, largo_elipse_ttl), stroke_width=0,fill='#FFFFFF') 
+
 crear_angulos(Mascara1)
-add_j3(Mascara1)
-#Colores(Mascara1)
+crear_lineas(Mascara1)
+crear_elipses(Mascara1)
+e0=ellipse((pcentralx, pcentraly), (ancho_elipse_ttl, largo_elipse_ttl), stroke_width=0,fill=color_e_ttl)
+Titulo=text(Mascara1_txt[0], (pcentralx-largo_ttl/2,pcentraly+ancho_fuente),  font_size=6*mm*Escala)
+Titulo_doc=text(Mascara1_txt[0], (pcentralx-largo_ttl*pcentralx/(pcentralx0), 3.2*3*ancho_fuente*pcentralx/pcentralx0),fill=color_e_ttl, stroke='#000000', stroke_width=0*mm, font_size=6*2*mm*pcentralx/pcentralx0)
 Escribir_texto(Mascara1)
 
 #svg_root.set('width', str(globals()["MedidaU"]*Escala*2)+'mm')
