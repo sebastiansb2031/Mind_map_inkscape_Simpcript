@@ -98,6 +98,7 @@ def organizar(Mascara1):
   
  #globals()["M1T"]=np.array(Mascara1)
  globals()["M1T"]=[]
+ print("len :"+str(len(Mascara1)))
  for i in range(len(Mascara1)):
   if Mascara1[i]<3:
    #globals()["M1T"][i]=int(str(1)+poner_ceros(len(np.bincount(Mascara1)),Mascara1[i])+poner_ceros(int(np.max(np.bincount(Mascara1))),int(str(np.max(np.bincount(Mascara1))-int(globals()["Nelementos"+str(Mascara1[i])+str(globals()["conta"+str(Mascara1[i])])]))))+str(poner_ceros(int(np.max(np.bincount(Mascara1))),globals()["conta"+str(Mascara1[i])]))) 
@@ -157,12 +158,13 @@ def crear_matriz():
     Mascara1=[1,2,3]
     Mascara1_txt=["Titulo","Subtitulo1","Subtitulo2"]
     Hipervinculo1=["nulo","nulo","nulo"]
-    Mascaracon=[1,1,1]
+    Mascaracon=["1","1","1"]
     Mascaracon_aux=Mascaracon
     titulo1=str(input("Escriba el titulo del mapa mental:  "))
-    Mascara1_txt_aux=Mascara1_txt
     Mascara1_txt[0]=titulo1
-    Mascara1_txt_aux[0]=str("1")+str("1")+str(titulo1)
+    Mascara1_txt_aux=["","",""]
+    for i in range(len(Mascara1_txt)):
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
     guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)  
     editando=1
   if c=="2":
@@ -190,7 +192,7 @@ def crear_matriz():
   editando=1
   while editando==1:
      
-   c0=input(str(Mascara1_txt_aux)+"\n"+"\n"+"Esta es la mascara actual"+"\n"+"Este es el término actual: "+str(Mascara1_txt_aux[posaux])+"\n"+"Ingrese el indice y la palabra o q :para salir g:guardar mapa hh:Crear hipervinculo :")
+   c0=input(str(Mascara1_txt_aux)+"\n"+"\n"+"Esta es la mascara actual"+"\n"+"Este es el término actual: "+str(Mascara1_txt_aux[posaux])+"\n"+"Ingrese el indice y la palabra o q :para salir g:guardar mapa hh:Crear hipervinculo : nw:Nuevo conceptos  cnw:Nuevo conector c:Cambiar cc:Cambiar conector  d:Borrar texto cd:Borrar texto de conector -1:Concepto anterior :" )
    for i in range(len(Mascara1_txt)):
       if Mascara1_txt_aux[i]==c0:
        posaux=i
@@ -218,7 +220,7 @@ def crear_matriz():
    
    for i in range(len(Mascara1_txt)):
      if Mascara1_txt_aux[i]==c0:
-      #globals()["posaux"]=i
+      globals()["posaux"]=i
       posaux=i
       i=len(Mascara1_txt)+1
    #c0aux=input("d o cd:Borrar cc o  c:Renombrar cnw o nw:Nueva rama nueva jerarquia o hh:Hipervinculo:  ")
@@ -258,10 +260,9 @@ def crear_matriz():
     guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
    if c0=="nw":
     entradanw=input("Ingrese el nuevo termino a reemplazar     :")
-    #Tamaño=np.bincount(Mascara1)
-    Mascara1.append(Mascara1[len(Mascara1_txt)-1])
+    Mascara1.append(Mascara1[len(Mascara1)-1])
     Mascara1_txt.append(Mascara1_txt[len(Mascara1_txt)-1])
-    Mascara1_txt_aux.append(Mascara1_txt[len(Mascara1_txt)-1])
+    Mascara1_txt_aux.append(Mascara1_txt_aux[len(Mascara1_txt_aux)-1])
     Mascaracon.append(Mascaracon[len(Mascaracon)-1])
     Hipervinculo1.append(Hipervinculo1[len(Hipervinculo1)-1])
     for i in range(len(Mascara1_txt[posaux:])-1):
