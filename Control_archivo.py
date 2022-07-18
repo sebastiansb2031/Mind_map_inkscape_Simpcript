@@ -145,19 +145,26 @@ def guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1):
  
   
 def crear_matriz():
-  
+  #globals()["posaux"]=0
+  globals()["Atajo"]=0
+  posaux=0
   c=input("1:Crear un nuevo mapa 2:Modificar un mapa existente q :para salir g:guardar mapa: :")
   if c=="1":
-    Mascara1=[int(1)]
-    Mascara1_txt=[""]
-    Hipervinculo1=[""]
-    Mascaracon=[1]
+    #Mascara1=[int(1)]
+    #Mascara1_txt=[""]
+    #Hipervinculo1=["nulo"]
+    #Mascaracon=[1]
+    Mascara1=[1,2,3]
+    Mascara1_txt=["Titulo","Subtitulo1","Subtitulo2"]
+    Hipervinculo1=["nulo","nulo","nulo"]
+    Mascaracon=[1,1,1]
     Mascaracon_aux=Mascaracon
     titulo1=str(input("Escriba el titulo del mapa mental:  "))
     Mascara1_txt_aux=Mascara1_txt
-    Mascara1_txt=[titulo1]
-    Mascara1_txt_aux=["1"+titulo1]
+    Mascara1_txt[0]=titulo1
+    Mascara1_txt_aux[0]=str("1")+str("1")+str(titulo1)
     guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)  
+    editando=1
   if c=="2":
     arch=input("Indique el nombre del archivo,debe estar en el mismo directorio    :")
     with open(arch+".txt","r") as textoo:
@@ -183,10 +190,9 @@ def crear_matriz():
   editando=1
   while editando==1:
      
-   c0=input(str(Mascara1_txt_aux)+"\n"+"\n"+"Esta es la mascara actual,ingrese el indice y la palabra o q :para salir g:guardar mapa hh:Crear hipervinculo :")
+   c0=input(str(Mascara1_txt_aux)+"\n"+"\n"+"Esta es la mascara actual"+"\n"+"Este es el término actual: "+str(Mascara1_txt_aux[posaux])+"\n"+"Ingrese el indice y la palabra o q :para salir g:guardar mapa hh:Crear hipervinculo :")
    for i in range(len(Mascara1_txt)):
       if Mascara1_txt_aux[i]==c0:
-       globals()["posaux1"]=i
        posaux=i
        i=len(Mascara1_txt)+1
    if c0=="g":
@@ -209,92 +215,95 @@ def crear_matriz():
     texton.close()
    if c0=="q":
     editando=0
-   else:
+   
+   for i in range(len(Mascara1_txt)):
+     if Mascara1_txt_aux[i]==c0:
+      #globals()["posaux"]=i
+      posaux=i
+      i=len(Mascara1_txt)+1
+   #c0aux=input("d o cd:Borrar cc o  c:Renombrar cnw o nw:Nueva rama nueva jerarquia o hh:Hipervinculo:  ")
+   if c0=="hh" :
+    chh=input("Ingrese el link del hipervinculo:  ")
+    #Hipervinculo1[globals()["posaux1"]]=str(chh)
+    Hipervinculo1[posaux]=str(chh)
+    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+   if c0=="d" :
+    Mascara1_txt[posaux]=""
+    Mascaracon[posaux]="1"
+    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
     for i in range(len(Mascara1_txt)):
-      if Mascara1_txt_aux[i]==c0:
-       globals()["posaux1"]=i
-       posaux=i
-       i=len(Mascara1_txt)+1
-    c0aux=input("d o cd:Borrar cc o  c:Renombrar cnw o nw:Nueva rama nueva jerarquia o hh:Hipervinculo:  ")
-    if c0aux=="hh" :
-     chh=input("Ingrese el link del hipervinculo:  ")
-     #Hipervinculo1[globals()["posaux1"]]=str(chh)
-     Hipervinculo1[posaux]=str(chh)
-     guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
-    if c0aux=="d" :
-     Mascara1_txt[posaux]=""
-     Mascaracon[posaux]="1"
-     guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
-     for i in range(len(Mascara1_txt)):
-      Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-     guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
-    if c0aux=="cd" :
-     Mascara1_txt[posaux]=""
-     Mascaracon[posaux]="0"
-     for i in range(len(Mascara1_txt)):
-      Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-     guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
-    if c0aux=="c" :
-     entradad=input("Ingrese el termino nuevo a reemplazar    :")
-     Mascara1_txt[posaux]=entradad
-     Mascara1_txt_aux[posaux]=str(Mascara1[posaux])+entradad
-     Mascaracon[posaux]="1"
-     for i in range(len(Mascara1_txt)):
-      Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-     guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1) 
-    if c0aux=="cc" :
-     entradad=input("Ingrese el termino nuevo a reemplazar    :")
-     Mascara1_txt[posaux]=entradad
-     Mascara1_txt_aux[posaux]=str(Mascara1[posaux])+entradad
-     Mascaracon[posaux]="0"
-     for i in range(len(Mascara1_txt)):
-      Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-     guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
-    if c0aux=="nw":
-     entradanw=input("Ingrese el nuevo termino a reemplazar     :")
-     #Tamaño=np.bincount(Mascara1)
-     Mascara1.append(Mascara1[len(Mascara1_txt)-1])
-     Mascara1_txt.append(Mascara1_txt[len(Mascara1_txt)-1])
-     Mascara1_txt_aux.append(Mascara1_txt[len(Mascara1_txt)-1])
-     Mascaracon.append(Mascaracon[len(Mascaracon)-1])
-     Hipervinculo1.append(Hipervinculo1[len(Hipervinculo1)-1])
-     for i in range(len(Mascara1_txt[posaux:])-1):
-      Mascara1[len(Mascara1)-1-i]=Mascara1[len(Mascara1)-2-i]
-      Mascara1_txt[len(Mascara1)-1-i]=Mascara1_txt[len(Mascara1)-2-i]
-      Mascara1_txt_aux[len(Mascara1)-1-i]=Mascara1_txt[len(Mascara1)-2-i] 
-      Mascaracon[len(Mascara1)-1-i]=Mascaracon[len(Mascara1)-2-i]
-      Hipervinculo1[len(Mascara1)-1-i]=Hipervinculo1[len(Mascara1)-2-i] 
-     Mascara1[posaux+1]=int(Mascara1[posaux+1])+1
-     Mascara1_txt[posaux+1]=entradanw
-     Mascara1_txt_aux[posaux+1]=str(Mascara1[posaux+1])+entradanw
-     Mascaracon[posaux+1]="1"
-     Hipervinculo1[posaux+1]="nulo"
-     for i in range(len(Mascara1_txt)):
-      Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-     guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
-     
-    if c0aux=="cnw":
-     entradanw=input("Ingrese el nuevo termino a reemplazar     :")
-     #Tamaño=np.bincount(Mascara1)
-     Mascara1.append(Mascara1[len(Mascara1_txt)-1])
-     Mascara1_txt.append(Mascara1_txt[len(Mascara1_txt)-1])
-     Mascara1_txt_aux.append(Mascara1_txt[len(Mascara1_txt)-1])
-     Mascaracon.append(Mascaracon[len(Mascaracon)-1])
-     Hipervinculo1.append(Hipervinculo1[len(Hipervinculo1)-1])
-     for i in range(len(Mascara1_txt[posaux:])-1):
-      Mascara1[len(Mascara1)-1-i]=Mascara1[len(Mascara1)-2-i]
-      Mascara1_txt[len(Mascara1)-1-i]=Mascara1_txt[len(Mascara1)-2-i]
-      Mascara1_txt_aux[len(Mascara1)-1-i]=Mascara1_txt[len(Mascara1)-2-i]
-      Mascaracon[len(Mascara1)-1-i]=Mascaracon[len(Mascara1)-2-i]
-      Hipervinculo1[len(Mascara1)-1-i]=Hipervinculo1[len(Mascara1)-2-i]
-     Mascara1[posaux+1]=int(Mascara1[posaux+1])+1
-     Mascara1_txt[posaux+1]=entradanw
-     Mascara1_txt_aux[posaux+1]=str(Mascara1[posaux+1])+entradanw
-     Mascaracon[posaux+1]="0"
-     Hipervinculo1[posaux+1]="nulo"
-     for i in range(len(Mascara1_txt)):
-      Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-     guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1) 
-
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
+    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+   if c0=="cd" :
+    Mascara1_txt[posaux]=""
+    Mascaracon[posaux]="0"
+    for i in range(len(Mascara1_txt)):
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
+    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+   if c0=="c" :
+    entradad=input("Ingrese el termino nuevo a reemplazar    :")
+    Mascara1_txt[posaux]=entradad
+    Mascara1_txt_aux[posaux]=str(Mascara1[posaux])+entradad
+    Mascaracon[posaux]="1"
+    for i in range(len(Mascara1_txt)):
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
+    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1) 
+   if c0=="cc" :
+    entradad=input("Ingrese el termino nuevo a reemplazar    :")
+    Mascara1_txt[posaux]=entradad
+    Mascara1_txt_aux[posaux]=str(Mascara1[posaux])+entradad
+    Mascaracon[posaux]="0"
+    for i in range(len(Mascara1_txt)):
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
+    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+   if c0=="nw":
+    entradanw=input("Ingrese el nuevo termino a reemplazar     :")
+    #Tamaño=np.bincount(Mascara1)
+    Mascara1.append(Mascara1[len(Mascara1_txt)-1])
+    Mascara1_txt.append(Mascara1_txt[len(Mascara1_txt)-1])
+    Mascara1_txt_aux.append(Mascara1_txt[len(Mascara1_txt)-1])
+    Mascaracon.append(Mascaracon[len(Mascaracon)-1])
+    Hipervinculo1.append(Hipervinculo1[len(Hipervinculo1)-1])
+    for i in range(len(Mascara1_txt[posaux:])-1):
+     Mascara1[len(Mascara1)-1-i]=Mascara1[len(Mascara1)-2-i]
+     Mascara1_txt[len(Mascara1)-1-i]=Mascara1_txt[len(Mascara1)-2-i]
+     Mascara1_txt_aux[len(Mascara1)-1-i]=Mascara1_txt[len(Mascara1)-2-i] 
+     Mascaracon[len(Mascara1)-1-i]=Mascaracon[len(Mascara1)-2-i]
+     Hipervinculo1[len(Mascara1)-1-i]=Hipervinculo1[len(Mascara1)-2-i] 
+    Mascara1[posaux+1]=int(Mascara1[posaux+1])+1
+    Mascara1_txt[posaux+1]=entradanw
+    Mascara1_txt_aux[posaux+1]=str(Mascara1[posaux+1])+entradanw
+    Mascaracon[posaux+1]="1"
+    Hipervinculo1[posaux+1]="nulo"
+    for i in range(len(Mascara1_txt)):
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
+    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+    #globals()["posaux"]=globals()["posaux"]+1
+    posaux=posaux+1 
+   if c0=="cnw":
+    entradanw=input("Ingrese el nuevo termino a reemplazar     :")
+    #Tamaño=np.bincount(Mascara1)
+    Mascara1.append(Mascara1[len(Mascara1_txt)-1])
+    Mascara1_txt.append(Mascara1_txt[len(Mascara1_txt)-1])
+    Mascara1_txt_aux.append(Mascara1_txt[len(Mascara1_txt)-1])
+    Mascaracon.append(Mascaracon[len(Mascaracon)-1])
+    Hipervinculo1.append(Hipervinculo1[len(Hipervinculo1)-1])
+    for i in range(len(Mascara1_txt[posaux:])-1):
+     Mascara1[len(Mascara1)-1-i]=Mascara1[len(Mascara1)-2-i]
+     Mascara1_txt[len(Mascara1)-1-i]=Mascara1_txt[len(Mascara1)-2-i]
+     Mascara1_txt_aux[len(Mascara1)-1-i]=Mascara1_txt[len(Mascara1)-2-i]
+     Mascaracon[len(Mascara1)-1-i]=Mascaracon[len(Mascara1)-2-i]
+     Hipervinculo1[len(Mascara1)-1-i]=Hipervinculo1[len(Mascara1)-2-i]
+    Mascara1[posaux+1]=int(Mascara1[posaux+1])+1
+    Mascara1_txt[posaux+1]=entradanw
+    Mascara1_txt_aux[posaux+1]=str(Mascara1[posaux+1])+entradanw
+    Mascaracon[posaux+1]="0"
+    Hipervinculo1[posaux+1]="nulo"
+    for i in range(len(Mascara1_txt)):
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
+    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1) 
+    #globals()["posaux"]=globals()["posaux"]+1
+    posaux=posaux+1
+   if c0=="-1":
+    posaux=posaux-1
 crear_matriz()
-
