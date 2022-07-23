@@ -27,11 +27,14 @@ radioyinicial=largo_elipse
 
 radio_min=2*2*max(radioxinicial,radioyinicial)
 Tamaño=np.bincount(Mascara1)
-globals()["MedidaU"]=Tamaño[len(Tamaño)-1]*max(ancho_elipse,largo_elipse)/(2*pi)+radio_min*((len(Tamaño)-1))+ancho_elipse_ttl+radio_min0
+globals()["Escalag"]=1
+globals()["MedidaU"]=Tamaño[len(Tamaño)-1]*max(ancho_elipse,largo_elipse)/(2*pi)+radio_min*((len(Tamaño)))+ancho_elipse_ttl+radio_min0
 #Escala=pcentralx/globals()["MedidaU"]
 Escala=1
-globals()["Escalag"]=1
-globals()["pcentralx"]=globals()["Escalag"]*globals()["MedidaU"]*296/210
+
+#globals()["pcentralx"]=globals()["Escalag"]*globals()["MedidaU"]*296/210
+#globals()["pcentraly"]=globals()["Escalag"]*globals()["MedidaU"]
+globals()["pcentralx"]=globals()["Escalag"]*globals()["MedidaU"]
 globals()["pcentraly"]=globals()["Escalag"]*globals()["MedidaU"]
 
 '''Coordenas de la elipse'''##########################################################################
@@ -53,6 +56,8 @@ Colorespastel1 ={'Rojo1' : '#E6B0AA', 'Morado1' : '#D7BDE2' ,'Azul1' : '#A9CCE3'
 #1pt=1.3333pt
 color_e_ttl=random.choice(list(Colorespastel1.values()))
 
+
+
 def angulos_limite(Mascara1,jerarquia,num):
  conta=0
  for i in range(len(Mascara1)):
@@ -73,15 +78,21 @@ def crear_matriz (matriz,Escala_radio):
  solape=0
  Tamaño=np.bincount(matriz)
  for k in range(len(Tamaño)-2) :
+  
   q=Tamaño[k+1]
   qf=Tamaño[k+2]
   radio_min0=ancho_elipse_ttl
   radio_min=2*2*max(ancho_elipse/2,largo_elipse)
-  radio=((q)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(2*k+2)+radio_min0)*Escala_radio
-  radiof=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(2*k)+radio_min0)*Escala_radio
-  if k==2:
-   radiof=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(2*k+1)+radio_min0)*Escala_radio
-  radiof2=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(2*k+2)+radio_min0)
+  if k<=3:
+   radio=((q)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((2*k))+radio_min0)*Escala_radio
+   radiof=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((2*(k)))+radio_min0)*Escala_radio
+  else:
+   radio=((q)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((1*(k))))*Escala_radio
+   radiof=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((1*(k)+1)))*Escala_radio
+  if k>3:
+   while radiof<radio+3*radio_min:
+    radiof=radiof+(2*(k)-4)*radio_min
+  radiof2=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(k)+2*radio_min0)*Escala_radio
   qh=2*pi*radio/(max(ancho_elipse,largo_elipse))
   qhf=2*pi*radiof/(max(ancho_elipse,largo_elipse))
   ang_actual=0
@@ -89,7 +100,7 @@ def crear_matriz (matriz,Escala_radio):
   nactual2=0
   aux1=0
   if k==len(Tamaño)-1:
-   globals()["Radiomax"]=(qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(2*k+2)+radio_min0
+   globals()["Radiomax"]=radiof
   if k>0:
    resh=360/(qh)
    res=360/(q)
@@ -101,11 +112,9 @@ def crear_matriz (matriz,Escala_radio):
      ang_actual=(i)
     for n in range(globals()["Nelementos"+str(k+1)+str(i)]): #numero de elementos jerarquia superior de cada elementos de jerarquia anterior
      if n%2==0:
-      #globals()["Angulo"+str(k+2)+str(nactual+n)]=round((globals()["Angulo"+str(k+1)+str(i)]+resf*(n)*pi/180)/(resf*pi/180))*(resf*pi/180)
       globals()["Angulo"+str(k+2)+str(nactual+n)]=round((angulos_limite(Mascara1,k+2,n+nactual)+resf*(n)*pi/180)/(resf*pi/180))*(resf*pi/180)
       if nactual>0: 
        while globals()["Angulo"+str(k+2)+str(nactual+n)]-globals()["Angulo"+str(k+2)+str(nactual+n-1)]<(resf*pi/(180*2)):
-        #globals()["Angulo"+str(k+2)+str(nactual+n)]=round((globals()["Angulo"+str(k+1)+str(i)]+resf*(n+aux1)*pi/180)/(resf*pi/180))*(resf*pi/180)
         globals()["Angulo"+str(k+2)+str(nactual+n)]=round((angulos_limite(Mascara1,k+2,n+nactual)+resf*(n+aux1)*pi/180)/(resf*pi/180))*(resf*pi/180)
         aux1=aux1+1
         if globals()["Angulo"+str(k+2)+str(nactual+n)]+(resf*pi)/180>(angulos_limite(Mascara1,k+2,n+nactual)+((360/(Tamaño[2]))*pi)/(180)):
@@ -116,7 +125,6 @@ def crear_matriz (matriz,Escala_radio):
       globals()["Color"+str(k+2)+str(nactual+n)]=random.choice(list(
       Colorespastel1.values()))
      else:
-      #globals()["Angulo"+str(k+2)+str(nactual+n)]=round((globals()["Angulo"+str(k+1)+str(i)]+resf*(n)*pi/180)/(resf*pi/180))*(resf*pi/180)
       globals()["Angulo"+str(k+2)+str(nactual+n)]=round((angulos_limite(Mascara1,k+2,n+nactual)+resf*(n)*pi/180)/(resf*pi/180))*(resf*pi/180)
       
       if nactual>0: 
@@ -138,15 +146,15 @@ def crear_matriz (matriz,Escala_radio):
    res=360/(qf)
    for i in range(qf):
      globals()["Angulo"+str(2)+str(i)]=res*i*pi/180
-     globals()["Centrox"+str(2)+str(i)]=(radiof2-radio_min)*cos(ang_actual+res*i*pi/180)+pcentralx
-     globals()["Centroy"+str(2)+str(i)]=( radiof2-radio_min)*sin(ang_actual+res*i*pi/180)+pcentraly
+     globals()["Centrox"+str(2)+str(i)]=(radiof2)*cos(ang_actual+res*i*pi/180)+pcentralx
+     globals()["Centroy"+str(2)+str(i)]=( radiof2)*sin(ang_actual+res*i*pi/180)+pcentraly
      globals()["Color"+str(2)+str(i)]=random.choice(list(Colorespastel1.values()))
  return solape  
     
 def prevenir_solape(Mascara1):
  while crear_matriz(Mascara1,globals()["Escalag"])>0:
-  globals()["Escalag"]=globals()["Escalag"]+0.1 
-  globals()["pcentralx"]=globals()["Escalag"]*globals()["MedidaU"]*296/210
+  globals()["Escalag"]=globals()["Escalag"]+0.05
+  globals()["pcentralx"]=globals()["Escalag"]*globals()["MedidaU"]
   globals()["pcentraly"]=globals()["Escalag"]*globals()["MedidaU"] 
 
 def crear_lineas(matriz):
@@ -227,7 +235,8 @@ prevenir_solape(Mascara1)
 #image('https://media.inkscape.org/static/images/inkscape-logo.png', (0, 0), embed=False)
 
 #rect((0, 0), (2*pcentralx, 2*pcentraly),fill='#FDFDE5',stroke_width=1*mm)
-rect((0, 0), (2*pcentralx, 2*pcentraly),fill='#FFFFFF',stroke_width=1*mm)
+#rect((0, 0), (2*pcentralx, 2*pcentraly),fill='#FFFFFF',stroke_width=1*mm)
+rect((0, 0), (2*globals()["pcentralx"], 2*globals()["pcentraly"]),fill='#FFFFFF',stroke_width=1*mm)
 crear_lineas(Mascara1)
 crear_elipses(Mascara1)
 e0=ellipse((pcentralx, pcentraly), (ancho_elipse_ttl, largo_elipse_ttl), stroke_width=0,fill=color_e_ttl)
