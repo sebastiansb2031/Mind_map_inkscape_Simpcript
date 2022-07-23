@@ -13,6 +13,24 @@ def poner_ceros (maximo,entrada):
  Nuevod=str(Nuevod)+str(entrada)
  return Nuevod
 ##########################################################################################################################
+#############################Reemplazar espacios por "_"
+def Reemplazar_espacio(termino):
+ aux=termino
+ if len(str(termino))==0:
+  aux="_"
+ for j in range(len(str(termino))):
+  if str(termino)[j]==' ':
+   aux=str(str(aux)[:j])+"_"+str(str(aux)[j+1:])
+ return aux      
+#####################################################################
+#################################Quitar "_" y colocar espacio
+def Quitar_espacio(termino):
+ aux=termino
+ for j in range(len(str(termino))):
+  if str(termino)[j]=='_':
+   aux=str(str(aux)[:j])+" "+str(str(aux)[j+1:])
+ return aux  
+##################################################
 ##############################################Función que permite rellanar con ceros a la derecha los codigos de los mapas##############
 def poner_ceros_der (maximo,entrada,matriz):
  Nuevod=""
@@ -75,6 +93,7 @@ def organizar(Mascara1):
   globals()["conta"+str(i)]=0
   globals()["pos"+str(i)]=np.where(np.array(Mascara1)==i)[0]
  for i in range(1,len(Tamaño)-1,1):
+#for i in range(1,len(Tamaño)-1,1):
   globals()["Nelementosmax"+str(i)]=0
   for j in range(len(globals()["pos"+str(i)])):
    if j<len(globals()["pos"+str(i)])-1:
@@ -98,7 +117,6 @@ def organizar(Mascara1):
   
  #globals()["M1T"]=np.array(Mascara1)
  globals()["M1T"]=[]
- print("len :"+str(len(Mascara1)))
  for i in range(len(Mascara1)):
   if Mascara1[i]<3:
    #globals()["M1T"][i]=int(str(1)+poner_ceros(len(np.bincount(Mascara1)),Mascara1[i])+poner_ceros(int(np.max(np.bincount(Mascara1))),int(str(np.max(np.bincount(Mascara1))-int(globals()["Nelementos"+str(Mascara1[i])+str(globals()["conta"+str(Mascara1[i])])]))))+str(poner_ceros(int(np.max(np.bincount(Mascara1))),globals()["conta"+str(Mascara1[i])]))) 
@@ -109,8 +127,9 @@ def organizar(Mascara1):
    globals()["M1T"].append(str(globals()["M1T"][Encontrar_anterior(Mascara1,i)])+str(poner_ceros(len(np.bincount(Mascara1)),Mascara1[i])+poner_ceros(int(np.max(np.bincount(Mascara1))),int(str(np.max(np.bincount(Mascara1))-int(globals()["Nelementos"+str(Mascara1[i])+str(globals()["conta"+str(Mascara1[i])])]))))+str(poner_ceros(int(np.max(np.bincount(Mascara1))),globals()["conta"+str(Mascara1[i])]))))
   if Mascara1[i]>=len(np.bincount(Mascara1))-1:
   
-   globals()["M1T"].append(str(globals()["M1T"][Encontrar_anterior(Mascara1,i)])+str(poner_ceros(len(np.bincount(Mascara1)),Mascara1[i])+poner_ceros(int(np.max(np.bincount(Mascara1))),int(str(np.max(np.bincount(Mascara1))-int(globals()["Nelementos"+str(Mascara1[i]-1)+str(globals()["conta"+str(Mascara1[i])])]))))+str(poner_ceros(int(np.max(np.bincount(Mascara1))),globals()["conta"+str(Mascara1[i])]))))
-  Nummaximo=(len(np.bincount(Mascara1))-1)*(2*(len(str(np.max(np.bincount(Mascara1)))))+len(str(len(np.bincount(Mascara1)))))
+   #globals()["M1T"].append(str(globals()["M1T"][Encontrar_anterior(Mascara1,i)])+str(poner_ceros(len(np.bincount(Mascara1)),Mascara1[i])+poner_ceros(int(np.max(np.bincount(Mascara1))),int(str(np.max(np.bincount(Mascara1))-int(globals()["Nelementos"+str(Mascara1[i]-1)+str(globals()["conta"+str(Mascara1[i])])]))))+str(poner_ceros(int(np.max(np.bincount(Mascara1))),globals()["conta"+str(Mascara1[i])]))))
+   globals()["M1T"].append(str(globals()["M1T"][Encontrar_anterior(Mascara1,i)])+str(poner_ceros(len(np.bincount(Mascara1)),Mascara1[i])+poner_ceros(int(np.max(np.bincount(Mascara1))),int(str(np.max(np.bincount(Mascara1)))))+str(poner_ceros(int(np.max(np.bincount(Mascara1))),globals()["conta"+str(Mascara1[i])]))))
+  Nummaximo=(len(np.bincount(Mascara1))-1)*(2*(len(str(np.max(np.bincount(Mascara1)))))+len(str(len(np.bincount(Mascara1))))) #Digitos que tienen todos los numeros
   globals()["conta"+str(Mascara1[i])]=int(globals()["conta"+str(Mascara1[i])])+1
  globals()["M1T"]=completar_digitos(Mascara1,globals()["M1T"])
  globals()["M2T"]=[]
@@ -161,11 +180,12 @@ def crear_matriz():
     Mascaracon=["1","1","1"]
     Mascaracon_aux=Mascaracon
     titulo1=str(input("Escriba el titulo del mapa mental:  "))
-    Mascara1_txt[0]=titulo1
+    Mascara1_txt[0]=Reemplazar_espacio(titulo1)
     Mascara1_txt_aux=["","",""]
     for i in range(len(Mascara1_txt)):
-     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)  
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Quitar_espacio(Mascara1_txt[i])
+    #guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+    guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1)  
     editando=1
   if c=="2":
     arch=input("Indique el nombre del archivo,debe estar en el mismo directorio    :")
@@ -177,18 +197,21 @@ def crear_matriz():
      Mascara1[i]=int(Mascara1[i])
     #Mascara1=np.array(Mascara1) 
     Mascara1_txt=lines[1].split()
+    Mascara1_txt_aux=lines[1].split()
     for i in range(len(Mascara1_txt)):
      for j in range(len(Mascara1_txt[i])):
       if Mascara1_txt[i][j]=='_':
-       Mascara1_txt[i]=str(Mascara1_txt[i][:j])+" "+str(Mascara1_txt[i][j+1:])
+       Mascara1_txt_aux[i]=str(Mascara1_txt[i][:j])+" "+str(Mascara1_txt[i][j+1:])
     Mascaracon=lines[2].split()
     Mascaracon_aux=Mascaracon
     Hipervinculo1=lines[3].split()
-    Mascara1_txt_aux=lines[1].split()
-    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+    
+    #guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+    guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1) 
     for i in range(len(Mascara1_txt)):
-     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+str(Quitar_espacio(Mascara1_txt[i]))
+    #guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+    guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1) 
   editando=1
   while editando==1:
      
@@ -228,36 +251,42 @@ def crear_matriz():
     chh=input("Ingrese el link del hipervinculo:  ")
     #Hipervinculo1[globals()["posaux1"]]=str(chh)
     Hipervinculo1[posaux]=str(chh)
-    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+    #guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+    guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1) 
    if c0=="d" :
-    Mascara1_txt[posaux]=""
+    Mascara1_txt[posaux]="_"
     Mascaracon[posaux]="1"
-    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+    #guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+    guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1) 
     for i in range(len(Mascara1_txt)):
-     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Quitar_espacio(Mascara1_txt[i])
+    #guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+    guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1) 
    if c0=="cd" :
-    Mascara1_txt[posaux]=""
+    Mascara1_txt[posaux]="_"
     Mascaracon[posaux]="0"
     for i in range(len(Mascara1_txt)):
-     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Quitar_espacio(Mascara1_txt[i])
+    guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1)  
+    #guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
    if c0=="c" :
     entradad=input("Ingrese el termino nuevo a reemplazar    :")
-    Mascara1_txt[posaux]=entradad
+    Mascara1_txt[posaux]=Reemplazar_espacio(entradad)
     Mascara1_txt_aux[posaux]=str(Mascara1[posaux])+entradad
     Mascaracon[posaux]="1"
     for i in range(len(Mascara1_txt)):
-     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1) 
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Quitar_espacio(Mascara1_txt[i])
+    guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1)  
+    #guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1) 
    if c0=="cc" :
     entradad=input("Ingrese el termino nuevo a reemplazar    :")
-    Mascara1_txt[posaux]=entradad
+    Mascara1_txt[posaux]=Reemplazar_espacio(entradad)
     Mascara1_txt_aux[posaux]=str(Mascara1[posaux])+entradad
     Mascaracon[posaux]="0"
     for i in range(len(Mascara1_txt)):
-     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Quitar_espacio(Mascara1_txt[i])
+    #guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+    guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1) 
    if c0=="nw":
     entradanw=input("Ingrese el nuevo termino a reemplazar     :")
     Mascara1.append(Mascara1[len(Mascara1)-1])
@@ -268,17 +297,18 @@ def crear_matriz():
     for i in range(len(Mascara1_txt[posaux:])-1):
      Mascara1[len(Mascara1)-1-i]=Mascara1[len(Mascara1)-2-i]
      Mascara1_txt[len(Mascara1)-1-i]=Mascara1_txt[len(Mascara1)-2-i]
-     Mascara1_txt_aux[len(Mascara1)-1-i]=Mascara1_txt[len(Mascara1)-2-i] 
+     Mascara1_txt_aux[len(Mascara1)-1-i]=Quitar_espacio(Mascara1_txt[len(Mascara1)-2-i]) 
      Mascaracon[len(Mascara1)-1-i]=Mascaracon[len(Mascara1)-2-i]
      Hipervinculo1[len(Mascara1)-1-i]=Hipervinculo1[len(Mascara1)-2-i] 
     Mascara1[posaux+1]=int(Mascara1[posaux+1])+1
-    Mascara1_txt[posaux+1]=entradanw
+    Mascara1_txt[posaux+1]=Reemplazar_espacio(entradanw)
     Mascara1_txt_aux[posaux+1]=str(Mascara1[posaux+1])+entradanw
     Mascaracon[posaux+1]="1"
     Hipervinculo1[posaux+1]="nulo"
     for i in range(len(Mascara1_txt)):
-     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Quitar_espacio(Mascara1_txt[i])
+    #guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+    guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1) 
     #globals()["posaux"]=globals()["posaux"]+1
     posaux=posaux+1 
    if c0=="cnw":
@@ -286,23 +316,24 @@ def crear_matriz():
     #Tamaño=np.bincount(Mascara1)
     Mascara1.append(Mascara1[len(Mascara1_txt)-1])
     Mascara1_txt.append(Mascara1_txt[len(Mascara1_txt)-1])
-    Mascara1_txt_aux.append(Mascara1_txt[len(Mascara1_txt)-1])
+    Mascara1_txt_aux.append(Mascara1_txt_aux[len(Mascara1_txt_aux)-1])
     Mascaracon.append(Mascaracon[len(Mascaracon)-1])
     Hipervinculo1.append(Hipervinculo1[len(Hipervinculo1)-1])
     for i in range(len(Mascara1_txt[posaux:])-1):
      Mascara1[len(Mascara1)-1-i]=Mascara1[len(Mascara1)-2-i]
      Mascara1_txt[len(Mascara1)-1-i]=Mascara1_txt[len(Mascara1)-2-i]
-     Mascara1_txt_aux[len(Mascara1)-1-i]=Mascara1_txt[len(Mascara1)-2-i]
+     Mascara1_txt_aux[len(Mascara1)-1-i]=Quitar_espacio(Mascara1_txt[len(Mascara1)-2-i])
      Mascaracon[len(Mascara1)-1-i]=Mascaracon[len(Mascara1)-2-i]
      Hipervinculo1[len(Mascara1)-1-i]=Hipervinculo1[len(Mascara1)-2-i]
     Mascara1[posaux+1]=int(Mascara1[posaux+1])+1
-    Mascara1_txt[posaux+1]=entradanw
+    Mascara1_txt[posaux+1]=Reemplazar_espacio(entradanw)
     Mascara1_txt_aux[posaux+1]=str(Mascara1[posaux+1])+entradanw
     Mascaracon[posaux+1]="0"
     Hipervinculo1[posaux+1]="nulo"
     for i in range(len(Mascara1_txt)):
-     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Mascara1_txt[i]
-    guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1) 
+     Mascara1_txt_aux[i]=str(Mascaracon[i])+str(Mascara1[i])+Quitar_espacio(Mascara1_txt[i])
+    #guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
+    guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1)  
     #globals()["posaux"]=globals()["posaux"]+1
     posaux=posaux+1
    if c0=="-1":
