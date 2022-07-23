@@ -91,8 +91,8 @@ def crear_matriz (matriz,Escala_radio):
    radiof=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((1*(k)+1)))*Escala_radio
   if k>3:
    while radiof<radio+3*radio_min:
-    radiof=radiof+(2*(k)-4)*radio_min
-  radiof2=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(k)+2*radio_min0)*Escala_radio
+    radiof=radiof+(2*(k)-3)*radio_min
+  radiof2=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(k)+radio_min0)*Escala_radio
   qh=2*pi*radio/(max(ancho_elipse,largo_elipse))
   qhf=2*pi*radiof/(max(ancho_elipse,largo_elipse))
   ang_actual=0
