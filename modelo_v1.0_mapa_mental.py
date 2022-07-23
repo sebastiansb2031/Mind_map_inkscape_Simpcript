@@ -90,6 +90,10 @@ def crear_matriz (matriz,Escala_radio):
    radio=((q)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((1*(k))))*Escala_radio
    radiof=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((1*(k)+1)))*Escala_radio
   if k>3:
+   #if k==4:
+    #radioant=((Tamaño[k+1])*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((2*(k-1)))+radio_min0)*Escala_radio
+    #while radio<radioant+2*radio_min:
+     #radio=radio+radio_min
    while radiof<radio+3*radio_min:
     radiof=radiof+(2*(k)-3)*radio_min
   radiof2=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(k)+radio_min0)*Escala_radio
@@ -153,7 +157,7 @@ def crear_matriz (matriz,Escala_radio):
     
 def prevenir_solape(Mascara1):
  while crear_matriz(Mascara1,globals()["Escalag"])>0:
-  globals()["Escalag"]=globals()["Escalag"]+0.05
+  globals()["Escalag"]=globals()["Escalag"]+0.1
   globals()["pcentralx"]=globals()["Escalag"]*globals()["MedidaU"]
   globals()["pcentraly"]=globals()["Escalag"]*globals()["MedidaU"] 
 
