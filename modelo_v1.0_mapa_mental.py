@@ -77,25 +77,26 @@ def angulos_limite(Mascara1,jerarquia,num):
 def crear_matriz (matriz,Escala_radio):
  solape=0
  Tamaño=np.bincount(matriz)
+ radio=0
  for k in range(len(Tamaño)-2) :
   
   q=Tamaño[k+1]
   qf=Tamaño[k+2]
   radio_min0=ancho_elipse_ttl
   radio_min=2*2*max(ancho_elipse/2,largo_elipse)
-  if k<=3:
-   radio=((q)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((2*k))+radio_min0)*Escala_radio
+  if k<=0:
+   #radio=((q)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((2*(k-1)))+radio_min0)*Escala_radio
    radiof=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((2*(k)))+radio_min0)*Escala_radio
   else:
-   radio=((q)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((1*(k))))*Escala_radio
+   radio=radiof
    radiof=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((1*(k)+1)))*Escala_radio
-  if k>3:
+  if k>0:
    #if k==4:
     #radioant=((Tamaño[k+1])*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*((2*(k-1)))+radio_min0)*Escala_radio
     #while radio<radioant+2*radio_min:
      #radio=radio+radio_min
-   while radiof<radio+3*radio_min:
-    radiof=radiof+(2*(k)-3)*radio_min
+   while radiof<radio+2*radio_min:
+    radiof=radiof+radio_min  
   radiof2=((qf)*(max(ancho_elipse,largo_elipse))/(2*pi)+radio_min*(k)+radio_min0)*Escala_radio
   qh=2*pi*radio/(max(ancho_elipse,largo_elipse))
   qhf=2*pi*radiof/(max(ancho_elipse,largo_elipse))
@@ -150,9 +151,10 @@ def crear_matriz (matriz,Escala_radio):
    res=360/(qf)
    for i in range(qf):
      globals()["Angulo"+str(2)+str(i)]=res*i*pi/180
-     globals()["Centrox"+str(2)+str(i)]=(radiof2)*cos(ang_actual+res*i*pi/180)+pcentralx
-     globals()["Centroy"+str(2)+str(i)]=( radiof2)*sin(ang_actual+res*i*pi/180)+pcentraly
+     globals()["Centrox"+str(2)+str(i)]=(radiof2+radio_min/2)*cos(ang_actual+res*i*pi/180)+pcentralx
+     globals()["Centroy"+str(2)+str(i)]=( radiof2+radio_min/2)*sin(ang_actual+res*i*pi/180)+pcentraly
      globals()["Color"+str(2)+str(i)]=random.choice(list(Colorespastel1.values()))
+     radio=radiof2
  return solape  
     
 def prevenir_solape(Mascara1):
