@@ -254,8 +254,25 @@ def crear_matriz():
     #guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
     guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1) 
    if c0=="d" :
-    Mascara1_txt[posaux]="_"
-    Mascaracon[posaux]="1"
+    #Mascara1_txt[posaux]="_"
+    #Mascaracon[posaux]="1"
+    #Mascara1.remove(Mascara1[posaux])
+    aux2=posaux+1
+    for m in range(posaux,len(Mascara1),1):
+     aux2=1+m 
+     if m==len(Mascara1)-1:
+      break
+     if Mascara1[posaux]==Mascara1[1+m] and posaux<len(Mascara1)-1:
+      break
+     if Mascara1[posaux]>Mascara1[1+m]:
+      break
+      
+    del Mascara1[posaux:aux2]
+    del Mascara1_txt[posaux:aux2]
+    del Mascara1_txt_aux[posaux:aux2]
+    del Mascaracon[posaux:aux2]
+    del Hipervinculo1[posaux:aux2]
+    posaux=posaux-1
     #guardar(Mascara1,Mascara1_txt,Mascaracon,Hipervinculo1)
     guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1) 
     for i in range(len(Mascara1_txt)):
@@ -336,6 +353,7 @@ def crear_matriz():
     guardar(Mascara1,Mascara1_txt_aux,Mascaracon,Hipervinculo1)  
     #globals()["posaux"]=globals()["posaux"]+1
     posaux=posaux+1
-   if c0=="-1":
-    posaux=posaux-1
+   #if c0=="-1":
+   if str(c0)[0]=="-" or str(c0)[0]=="+":
+    posaux=posaux+int(c0)
 crear_matriz()
